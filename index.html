@@ -11,22 +11,27 @@
 </head>
 <style>
     .nav{
-        background-color: aqua;
+        height: 100vh;
+        width: 25vw;
     }
 </style>
 <body>
-    <ul class="nav flex-column justify-content-center ">
-        <li class="nav-item">
-            <a class="nav-limk" href="#">Home</a>
+    <ul class="nav flex-column justify-content-center bg-primary">
+        <li class="nav-item d-flex align-items-center p-3">
+            <i class="fa-solid text-white fa-bars-staggered"></i>
+            <a class="nav-link text-white" href="#">Home</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#"> Search</a>
+        <li class="nav-item d-flex align-items-center p-3">
+            <i class="fa-solid text-white fa-search"></i>
+            <a class="nav-link text-white" href="#">Search</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Favourites</a>
+        <li class="nav-item d-flex align-items-center p-3">
+            <i class="fa-solid text-white fa-heart"></i>
+            <a class="nav-link text-white" href="#">Favourites</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">Playlists</a>
+        <li class="nav-item d-flex align-items-center p-3">
+            <i class="fa-solid text-white fa-play"></i>
+            <a class="nav-link text-white" href="#">Playlists</a>
         </li>
     </ul>
 </body>
