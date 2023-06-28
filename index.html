@@ -158,6 +158,17 @@ const options = {
 try {
 	const response = await fetch(url, options);
 	const result = await response.json();
+    result.tracks.forEach(track => {
+        let list = document.getElementById('list')
+        let div = document.createElement('div')
+        div.innerHTML = `<img src="./banner.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text">${track.title}</p>
+                        </div>`
+        div.classList.add('card')
+        list.appendChild(div);
+        console.log(track.title);
+    });
 	console.log(result);
 } catch (error) {
 	console.error(error);
