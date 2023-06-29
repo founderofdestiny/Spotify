@@ -24,9 +24,11 @@
         height: 30vh;
         text-align: end;
     }
-    .card{
-        width: 18rem;
+
+    .card {
+        width: 9rem;
     }
+
     .go-x {
         display: grid;
         grid-auto-flow: column;
@@ -145,36 +147,39 @@
         </div>
     </div>
     <script>
-        const load = async () =>{
-        const url = 'https://shazam.p.rapidapi.com/charts/track?locale=en-US&pageSize=20&startFrom=0';
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': '5ac5335309msh24753f0e90cdda0p12587cjsn61d481a928e6',
-		'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
-	}
-};
+        const load = async () => {
+            const url = 'https://shazam.p.rapidapi.com/charts/track?locale=en-US&pageSize=20&startFrom=0';
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': '5ac5335309msh24753f0e90cdda0p12587cjsn61d481a928e6',
+                    'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+                }
+            };
 
-try {
-	const response = await fetch(url, options);
-	const result = await response.json();
-    result.tracks.forEach(track => {
-        let list = document.getElementById('list')
-        let div = document.createElement('div')
-        div.innerHTML = `<img src="./banner.jpg" class="card-img-top" alt="...">
+            try {
+                const response = await fetch(url, options);
+                const result = await response.json();
+                result.tracks.forEach(track => {
+                    let list = document.getElementById('list')
+                    let div = document.createElement('div')
+                    div.classList.add('card')
+                    div.innerHTML = 
+                    `<a href="${track.url}" class="text-decoration-none">
+                        <img src="${track.images.background}" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <p class="card-text">${track.title}</p>
-                        </div>`
-        div.classList.add('card')
-        list.appendChild(div);
-        console.log(track.title);
-    });
-	console.log(result);
-} catch (error) {
-	console.error(error);
-}
+                            <p class="card-text text-center">${track.title}</p>
+                        </div>
+                    </a>`
+                    list.appendChild(div);
+                    console.log(track);
+                });
+                // console.log(result);
+            } catch (error) {
+                console.error(error);
+            }
         }
-load();
+        load();
     </script>
 </body>
 
