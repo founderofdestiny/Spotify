@@ -91,11 +91,6 @@
         background: #888;
         border-radius: 1rem;
     }
-
-    .fa-star:hover,.active {
-        cursor: pointer;
-        color: yellowgreen;
-    }
 </style>
 
 <body>
@@ -140,57 +135,22 @@
                     <h1>Your Favourite tunes</h1>
                     <p class="fs-4">all <i class="fa-solid fa-sun"></i> and all <i class="fa-solid fa-moon"></i></p>
                 </div>
-                <article class="container">
-                    <h1>Released this week <button class="btn btn-danger float-end" onclick="logout()">logout</button>
+                <article>
+                    <i class="fa fa-search"></i>
+                    <input oninput="change(this.value)" type="text" name="search" id="search">
+                    <h1>suggetions <button class="btn btn-danger float-end" onclick="logout()">logout</button>
                     </h1>
                     <div id="list" class="go-x"></div>
-                    <h1>Featured Playlists</h1>
-                    <div id="list2" class="go-x"></div>
                 </article>
             </div>
         </div>
     </div>
     <script>
-        function makecard(track){
-            let x = JSON.parse(localStorage.getItem('favorites'));
-            let c = x.includes(track.key)?'active':'';
-
-            return `<a href="${track.url}" title="${track.title}" class="text-decoration-none">
-                        <img src="${track.images.background}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text text-center">${track.title}</p>
-                        </div>
-                        </a>
-                        <i class="fa fa-star ${c}" id="${track.key}"></i>`
-        }
-        const load = async () => {
-            const url = 'https://shazam.p.rapidapi.com/charts/track?locale=en-US&pageSize=20&startFrom=0';
+        async function change(v) {
+            let list = document.getElementById('list')
+            list.innerHTML='';
+            const url = `https://shazam.p.rapidapi.com/auto-complete?term=${v}&locale=en-US`;
             const options = {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key': '5ac5335309msh24753f0e90cdda0p12587cjsn61d481a928e6',
-                    'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
-                }
-            };
-
-            try {
-                const response = await fetch(url, options);
-                const result = await response.json();
-                result.tracks.forEach(track => {
-                    let list = document.getElementById('list')
-                    let div = document.createElement('div')
-                    div.classList.add('card')
-                    div.innerHTML = makecard(track)
-                        
-                    list.appendChild(div);
-                    // console.log(track);
-                });
-                // console.log(result);
-            } catch (error) {
-                console.error(error);
-            }
-            const url2 = 'https://shazam.p.rapidapi.com/songs/list-recommendations?key=484129036&locale=en-US';
-            const options2 = {
                 method: 'GET',
                 headers: {
                     'X-RapidAPI-Key': 'cab7524a01mshee840e3c03fa488p11d9e5jsnf22675846a09',
@@ -199,49 +159,31 @@
             };
 
             try {
-                const response = await fetch(url2, options2);
+                const response = await fetch(url, options);
                 const result = await response.json();
-                // console.log(result);
-                result.tracks.forEach(track => {
-                    let list = document.getElementById('list2')
+                result.hints.forEach(track => {
                     let div = document.createElement('div')
                     div.classList.add('card')
-                    div.innerHTML = makecard(track)
+                    div.innerHTML =
+                        `<div class="card-body">
+                            <p class="card-text text-center">${track.term}</p>
+                        </div>
+                    </a>`
                     list.appendChild(div);
-                    // console.log(track);
                 });
+                console.log(result);
             } catch (error) {
                 console.error(error);
             }
-            Array.from(document.getElementsByClassName('fa-star')).forEach(a => {
-                a.addEventListener('click',()=>{
-                    // console.log(a.id);
-                    a.classList.add('active');
-
-                    let x = localStorage.getItem('favorites');
-                    if(x){
-                        x =new Set(JSON.parse(x))
-                        x.add(a.id)
-                        localStorage.setItem('favorites',JSON.stringify(Array.from(x)));
-                        // console.log(x);
-                    }else{
-                        localStorage.setItem('favorites','["'+a.id+'"]');
-                    }
-                    console.log(localStorage.getItem('favorites'));
-                })
-                // console.log(a);
-            })
         }
-        load();
         console.log(localStorage.getItem('user'));
         if (!localStorage.getItem('user')) {
             window.location.href = 'login.html';
         }
         function logout() {
             localStorage.clear()
-            window.location.reload();
+            window.location.href = 'login.html';
         }
-
     </script>
 </body>
 
